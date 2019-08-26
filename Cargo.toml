@@ -1,0 +1,9 @@
+[package]
+name = "sheetesia"
+version = "0.1.0"
+authors = ["alborrajo"]
+edition = "2018"
+
+[dependencies]
+opencv = {version = "0.19", default-features = false, features = ["opencv-41"]}
+ghakuf = "0.5.3"
