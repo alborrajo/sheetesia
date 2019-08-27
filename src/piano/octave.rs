@@ -5,7 +5,7 @@ pub struct Octave {
 }
 
 pub struct Note {
-    pub code: i8,
+    pub code: u8,
 
 	pub location: Point,
 	pub default_color: Vec3b,
@@ -47,7 +47,7 @@ impl Octave {
 
             let avg_x = (min_x+max_x)/2;
             notes.push(Note {
-                code: note as i8,
+                code: note as u8,
 
                 location: octave_location + Point {x: avg_x, y: 0}, // Use a point in the middle
                 default_color: *octave_image.at_2d(0, avg_x).unwrap(), // Color in that point
@@ -79,7 +79,7 @@ impl Note {
     // Return human readable note name
     pub fn to_string(&self) -> String {
         let octave_number = (self.code/12) - 1; 
-        let note_number: usize = self.code.abs() as usize % 12;
+        let note_number: usize = self.code as usize % 12;
 
         let note_strings = vec!["C ", "C#", "D ", "D#", "E ", "F ", "F#", "G ", "G#", "A ", "A#", "B "];
         return format!("{} {}", note_strings[note_number], octave_number);

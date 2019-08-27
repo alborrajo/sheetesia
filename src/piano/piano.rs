@@ -124,13 +124,13 @@ impl Piano {
 		}
 
 		// Update note codes		
-		let index_to_octave_number: i8 = /* middle C = C4 + 1 because midi*/ 5 - middle_c_octave_index as i8; // Add this to an octave index to get the octave number
+		let index_to_octave_number: u8 = /* middle C = C4 + 1 because midi*/ 5 - middle_c_octave_index as u8; // Add this to an octave index to get the octave number
 		
 		// Update note codes
 		let mut octave_index = 0;
 		for octave in &mut self.octaves {
 			for mut note in &mut octave.notes {
-				note.code = ((octave_index+index_to_octave_number) * 12) as i8 + note.code;
+				note.code = ((octave_index+index_to_octave_number) * 12) as u8 + note.code;
 			}
 			octave_index = octave_index + 1;
 		}
