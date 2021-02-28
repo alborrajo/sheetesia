@@ -14,7 +14,7 @@ use crate::piano::piano::*;
 fn main() {
 	// Load files
 	let video_path = std::env::args().nth(1).expect("Please provide a video as an argument");
-	let mut video: VideoCapture = VideoCapture::new_from_file_with_backend(&video_path, CAP_ANY).unwrap();
+	let mut video: VideoCapture = VideoCapture::from_file(&video_path, CAP_ANY).unwrap();
 	
 	let template: Mat = imread("res/template.png", IMREAD_COLOR).unwrap();
 
@@ -90,11 +90,13 @@ fn main() {
 			break;
 		}
 		
+		let mut key_pressed_or_released_in_this_frame = false;
+
 		// For each note in every octave
 		let mut octave_index = 0;
 		for octave in &mut piano.octaves {
 			let mut note_index = 0;
-			for mut note in &mut octave.notes {
+			for note in &mut octave.notes {
 				let note_color: Vec3b = *frame.at_2d(note.location.y, note.location.x).unwrap();
 				
 				// Skip check if the color is close to the one in the previous frame
@@ -115,7 +117,7 @@ fn main() {
 					match result {
 						Ok(pressed) => {
 							if pressed {
-								println!("{}\tpressed \t@ frame {} of {}\t({}%)", note.to_string(), frame_count, total_frames, (frame_count as f64 / total_frames)*100.0);
+								println!("{}\tpressed \t@ frame {} of {}\t({:.2}%)", note.to_string(), frame_count, total_frames, (frame_count as f64 / total_frames)*100.0);
 								midi_messages.push(
 									Message::MidiEvent {
 										delta_time: (frame_count - frame_count_on_last_event) * ticks_per_frame,
@@ -127,7 +129,7 @@ fn main() {
 									}
 								);
 							} else {
-								println!("{}\treleased\t@ frame {} of {}\t({}%)", note.to_string(), frame_count, total_frames, (frame_count as f64 / total_frames)*100.0);
+								println!("{}\treleased\t@ frame {} of {}\t({:.2}%)", note.to_string(), frame_count, total_frames, (frame_count as f64 / total_frames)*100.0);
 								midi_messages.push(
 									Message::MidiEvent {
 										delta_time: (frame_count - frame_count_on_last_event) * ticks_per_frame,
@@ -139,6 +141,9 @@ fn main() {
 									}
 								);
 							}
+
+							// Show frame
+							key_pressed_or_released_in_this_frame = true;
 
 							// Update variable to keep track of the last pushed MIDI event
 							frame_count_on_last_event = frame_count;
@@ -153,6 +158,12 @@ fn main() {
 			}
 
 			octave_index = octave_index+1;
+		}
+
+		// Show frame
+		if key_pressed_or_released_in_this_frame {
+			imshow("Gabo", &frame).unwrap();
+			wait_key(1).unwrap();
 		}
 
 		// Increment frame count

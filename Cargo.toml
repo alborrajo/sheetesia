@@ -5,5 +5,5 @@ authors = ["alborrajo"]
 edition = "2018"
 
 [dependencies]
-opencv = {version = "0.19", default-features = false, features = ["opencv-41"]}
+opencv = "0.49"
 ghakuf = "0.5.3"

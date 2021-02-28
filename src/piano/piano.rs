@@ -29,7 +29,7 @@ impl Piano {
 		let template: Mat = get_scaled_template(&image, &unscaled_template);
 
 		// Matrix to store the match_tempalte results
-		let mut result: Mat = Mat::new_rows_cols_with_default(image.rows().unwrap()-template.rows().unwrap()+1, image.cols().unwrap()-template.cols().unwrap()+1, CV_32FC1, Scalar::all(0.0)).unwrap();
+		let mut result: Mat = Mat::new_rows_cols_with_default(image.rows()-template.rows()+1, image.cols()-template.cols()+1, CV_32FC1, Scalar::all(0.0)).unwrap();
 			
 		// Do the Matching
 		match_template(&image, &template, &mut result, TM_SQDIFF_NORMED, &Mat::default().unwrap()).unwrap();
@@ -65,7 +65,7 @@ impl Piano {
 				// This is done so min_max_loc can locate the next instance of the template when it loops
 				rectangle_points(&mut threshold_result,
 					Point { x: min_loc.x - 10, y: 0 },
-					Point { x: min_loc.x + template.cols().unwrap() - 10 , y: image.rows().unwrap() },
+					Point { x: min_loc.x + template.cols() - 10 , y: image.rows() },
 					Scalar::all(1.0), -1, 4, 0)
 				.unwrap();
 			}
@@ -110,7 +110,7 @@ impl Piano {
 			
 			// Probe for a gray pixel
 			let thresh = 10;
-			for y in note.location.y..image.rows().unwrap()-20 {
+			for y in note.location.y..image.rows()-20 {
 				let pixel: Vec3b = *image.at_2d(y, note.location.x).unwrap();
 				
 				// If the difference between the note's default color and the current pixel is greater than the threshold

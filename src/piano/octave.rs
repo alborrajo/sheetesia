@@ -23,8 +23,8 @@ impl Octave {
         for note in 0..12 {
 
             // Variables to store the bounds of the current note
-            let mut min_x = (template.cols().unwrap()*note)/12;
-            let mut max_x = (template.cols().unwrap()*(note+1))/12;
+            let mut min_x = (template.cols()*note)/12;
+            let mut max_x = (template.cols()*(note+1))/12;
 
             // For each pixel in the note's pixel range
             for x in min_x..max_x {
