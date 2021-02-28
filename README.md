@@ -8,7 +8,7 @@ Easily turn piano tutorials into music sheet
 
 ## How to use
 
-To compile this project you need [cargo](https://doc.rust-lang.org/cargo/index.html) and [opencv 4.1](https://opencv.org/).
+To compile this project you need [cargo](https://doc.rust-lang.org/cargo/index.html) and [opencv](https://opencv.org/).
 
 - [Compile OpenCV generating a pkg-config file](https://github.com/opencv/opencv/issues/13154#issuecomment-456652297)
 
